@@ -3,10 +3,12 @@
 namespace App\Model;
 
 use App\Category;
+use App\Traits\commentable;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    use commentable;
 
     const PENDING = 0;
     const PUBLISHED = 1;
@@ -48,4 +50,6 @@ class Post extends Model
     {
         return $this->belongsToMany(\App\Model\Category::class,'category_post','post_id','category_id');
     }
+
+
 }
