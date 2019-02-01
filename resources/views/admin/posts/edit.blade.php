@@ -41,6 +41,15 @@
                     </ul>
                 </div>
                 <div class="form-group">
+                    <label for="postTag">برچسب ها:</label>
+                    <select name="postTags[]" id="postTags" multiple style="min-width: 300px">
+                        @foreach($allTags as $tag)
+                            <option value="{{$tag->id}}"
+                                    {{in_array($tag->id,$postTags)?'selected':''}} >{{$tag->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="postStatus">نقش مطلب :</label>
                     <select name="postStatus" id="postStatus" class="form-control persianText">
                         @foreach($postStatus as $postStatusId =>$postStatusTitle)

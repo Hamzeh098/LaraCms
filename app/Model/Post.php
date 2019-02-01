@@ -4,11 +4,12 @@ namespace App\Model;
 
 use App\Category;
 use App\Traits\commentable;
+use App\Traits\taggable;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    use commentable;
+    use commentable,taggable;
 
     const PENDING = 0;
     const PUBLISHED = 1;

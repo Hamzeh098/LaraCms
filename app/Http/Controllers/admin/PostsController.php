@@ -6,6 +6,7 @@ use App\Http\Requests\PostCreateRequest;
 use App\Http\Requests\RequestEditPost;
 use App\Model\Category;
 use App\Model\Post;
+use App\Model\Tag;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -23,11 +24,13 @@ class PostsController extends Controller
     {
         $postStatus         = Post::getStatuses();
         $allCategories      = Category::get();
+        $allTags            = Tag::get();
         $categories         = $allCategories->groupBy('parent_id');
         $categories['root'] = $categories[''];
         unset($categories['']);
 
-        return view('admin.posts.create', compact('postStatus', 'categories'));
+        return view('admin.posts.create',
+            compact('postStatus', 'categories', 'allTags'));
     }
 
     public function store(PostCreateRequest $request)
@@ -44,6 +47,21 @@ class PostsController extends Controller
             $categories = $request->input('categories');
             if (count($categories) > 0) {
                 $post->categories()->attach($categories);
+            }
+            $tags = $request->input('postTags');
+            foreach ($tags as $key => $tag) {
+                if (intval($tag) == 0) {
+                    unset($tags[$key]);
+                    $newTag = Tag::create(['name' => $tag]);
+                    $tags[] = $newTag->id;
+                }
+                $tags = array_map(function ($item) {
+                    return intval($item);
+                }, $tags);
+                $tags = array_unique($tags);
+                $post->tags()->sync($tags);
+
+
             }
 
             return redirect()->route('admin.posts')
@@ -69,11 +87,14 @@ class PostsController extends Controller
         $postStatus     = Post::getStatuses();
         $post           = Post::find($post_id);
         $categories     = Category::get();
+        $allTags        = Tag::get();
+        $postTags       = $post->tags()->pluck('id')->toArray();
         $postCategories = $post->categories()->pluck('id')->toArray();
 
 
         return view('admin.posts.edit',
-            compact('post', 'categories', 'postStatus', 'postCategories'));
+            compact('post', 'categories', 'postStatus', 'postCategories',
+                'allTags', 'postTags'));
     }
 
     public function update(RequestEditPost $request, $post_id)
@@ -91,6 +112,21 @@ class PostsController extends Controller
                 $categories = $request->input('categories');
                 if (count($categories) > 0) {
                     $post->categories()->sync($categories);
+                }
+                $tags = $request->input('postTags');
+                foreach ($tags as $key => $tag) {
+                    if (intval($tag) == 0) {
+                        unset($tags[$key]);
+                        $newTag = Tag::create(['name' => $tag]);
+                        $tags[] = $newTag->id;
+                    }
+                    $tags = array_map(function ($item) {
+                        return intval($item);
+                    }, $tags);
+                    $tags = array_unique($tags);
+                    $post->tags()->sync($tags);
+
+
                 }
 
                 return redirect()->route('admin.posts')
