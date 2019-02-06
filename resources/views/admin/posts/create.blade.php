@@ -28,9 +28,17 @@
                 <div class="form-group">
                     <label for="postcategory">دسته بندی ها</label>
                     <div class="postcategory">
-                       @include('admin.category.list',['items' =>$categories['root']])
+                        @include('admin.category.list',['items' =>$categories['root']])
                     </div>
 
+                </div>
+                <div class="form-group">
+                    <label for="postTag">برچسب ها:</label>
+                    <select name="postTags[]" id="postTags" multiple style="min-width: 300px">
+                        @foreach($allTags as $tag)
+                            <option value="{{$tag->id}}">{{$tag->name}}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="postStatus">نقش مطلب :</label>

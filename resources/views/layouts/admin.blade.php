@@ -8,6 +8,8 @@
     <link href="/css/helper.css" rel="stylesheet">
     <link href="/css/fonts.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+
     <style>
         {ul}
         {li}
@@ -377,7 +379,9 @@
 <script src="/js/sidebarmenu.js"></script>
 <!--stickey kit -->
 <script src="/js/lib/sticky-kit-master/dist/sticky-kit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <!--Custom JavaScript -->
 <script src="/js/custom.min.js"></script>
+<script src="/js/cms.js"></script>
 </body>
 </html>
